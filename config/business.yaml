@@ -1,0 +1,27 @@
+# Configuración del negocio — Generado por AgentKit
+negocio:
+  nombre: "Calden Viajes"
+  descripcion: >
+    Agencia de viajes minorista con más de 33 años de trayectoria en Santa Rosa,
+    La Pampa, Argentina (Legajo 8124 DNT). Especializada en paquetes turísticos
+    grupales en bus, tanto a destinos nacionales como internacionales. Trabaja con
+    Caluch Viajes como operador mayorista (Legajo N° 8740, 50 años de experiencia).
+    Asesora a sus clientes para cotizar y reservar viajes a medida.
+  horario: "Lunes a Viernes de 10:00 a 18:00"
+  telefonos:
+    - "2954-234482"
+    - "2954-4222775"
+
+agente:
+  nombre: "Valentina"
+  tono: "Empático y cálido"
+  casos_de_uso:
+    - "Responder preguntas frecuentes"
+    - "Agendar citas y gestionar reservaciones"
+    - "Calificar y atender leads / ventas"
+    - "Tomar pedidos de cotización"
+    - "Soporte post-venta"
+
+metadata:
+  creado: "2026-06-30"
+  version: "1.0"

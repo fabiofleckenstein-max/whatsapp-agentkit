@@ -11,6 +11,8 @@ import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import PlainTextResponse
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from dotenv import load_dotenv
 
 from agent.brain import generar_respuesta
@@ -44,6 +46,19 @@ app = FastAPI(
     title="AgentKit — WhatsApp AI Agent",
     version="1.0.0",
     lifespan=lifespan
+)
+
+# Permite que el widget web (Netlify) y el sitio de Calden Viajes
+# le hablen a este servidor desde el navegador.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://fabulous-tarsier-fa87b3.netlify.app",
+        "https://caldenviajes.tur.ar",
+        "https://www.caldenviajes.tur.ar",
+    ],
+    allow_methods=["POST", "GET"],
+    allow_headers=["*"],
 )
 
 
@@ -99,4 +114,24 @@ async def webhook_handler(request: Request):
 
     except Exception as e:
         logger.error(f"Error en webhook: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+class ChatRequest(BaseModel):
+    mensaje: str
+    historial: list[dict] = []
+
+
+@app.post("/chat")
+async def chat_handler(req: ChatRequest):
+    """
+    Endpoint para el widget de chat web (Netlify / Blogger).
+    Recibe un mensaje + historial y devuelve la respuesta de Valentina,
+    usando la misma lógica y base de conocimiento que WhatsApp.
+    """
+    try:
+        respuesta = await generar_respuesta(req.mensaje, req.historial)
+        return {"respuesta": respuesta}
+    except Exception as e:
+        logger.error(f"Error en /chat: {e}")
         raise HTTPException(status_code=500, detail=str(e))

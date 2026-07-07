@@ -90,6 +90,6 @@ async def generar_respuesta(mensaje: str, historial: list[dict]) -> str:
         logger.info(f"Respuesta generada ({response.usage.input_tokens} in / {response.usage.output_tokens} out)")
         return respuesta
 
-    except Exception as e:
-        logger.error(f"Error Claude API: {e}")
-        return obtener_mensaje_error()
+ except Exception as e:
+       logger.error(f"Error Claude API: {e}")
+       return f"[DEBUG] {type(e).__name__}: {e}"
